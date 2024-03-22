@@ -19,7 +19,7 @@
             <div>
                 <x-label for="email" :value="__('messages.national_id')" />
 
-                <x-input id="national_id" class="block mt-1 w-full" type="number" name="national_id" :value="old('national_id')" required autofocus />
+                <x-input id="national_id" class="block mt-1 w-full" type="number" name="national_id" :value="old('national_id')" required />
             </div>
 
             <!-- Password -->
