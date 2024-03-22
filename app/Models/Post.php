@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -15,6 +17,7 @@ class Post extends Model
         'title_ar',
         'body_en',
         'body_ar',
+        'user_id'
     ];
 
     public function getImagePathAttribute($value): ?string
@@ -30,5 +33,20 @@ class Post extends Model
     public function getBodyAttribute()
     {
         return self::getLocaleValue('body');
+    }
+    
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get all of the comments for the Post
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'post_id');
     }
 }
