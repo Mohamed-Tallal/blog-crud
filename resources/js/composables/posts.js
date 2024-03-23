@@ -11,14 +11,12 @@ export default function usePosts() {
     const getPosts = async () => {
         let response = await axios.get('/api/posts')
         posts.value = response.data.data;
-        console.log('getPosts');
 
     }
 
     const getPost = async (id) => {
         let response = await axios.get('/api/posts/' + id )
         post.value = response.data.data;
-        console.log(response.data);
     }
 
     const storePost = async (data) => {
@@ -48,8 +46,6 @@ export default function usePosts() {
 
     const deletePost = async (id) => {
         await axios.delete('/api/posts/' + id)
-        console.log('delete');
-
     }
 
 

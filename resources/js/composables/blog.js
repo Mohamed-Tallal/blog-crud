@@ -15,7 +15,6 @@ export default function useBlog() {
             }
           })
           posts.value = response.data.data
-          console.log('getPosts')
         } catch (error) {
           console.error(error)
         }
@@ -24,7 +23,6 @@ export default function useBlog() {
     const showPost = async (id) => {
         let response = await axios.get(`/api/blog/${id}`)
         post.value = response.data.data
-        console.log(response.data.data);
 
     }
 
