@@ -58,7 +58,7 @@
 <script>
 import usePosts from "../../composables/posts";
 import { onMounted } from "vue";
-
+import Swal from 'sweetalert2'
 export default {
     props: {
         id: {
@@ -74,6 +74,7 @@ export default {
 
         const updatePostData = async () => {
             await updatePost(props.id)
+            Swal.fire("Post Updated successfully");
         }
 
         return {

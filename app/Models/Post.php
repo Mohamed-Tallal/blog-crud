@@ -7,11 +7,12 @@ use App\Models\Comment;
 use App\Trait\GetsFileUrl;
 use App\Trait\HasLocaleValue;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory, GetsFileUrl,HasLocaleValue;
+    use HasFactory, GetsFileUrl,HasLocaleValue,SoftDeletes;
 
     protected $fillable = [
         'image',

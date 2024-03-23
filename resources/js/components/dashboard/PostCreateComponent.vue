@@ -59,7 +59,7 @@
 <script>
 import { reactive } from "vue";
 import usePosts from "../../composables/posts";
-
+import Swal from 'sweetalert2';
 export default {
     setup() {
         const form = reactive({
@@ -73,6 +73,8 @@ export default {
 
         const saveMyPost = async () => {
             await storePost({...form});
+            Swal.fire("Post Created successfully");
+
         }
 
         return {

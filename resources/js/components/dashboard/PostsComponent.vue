@@ -61,30 +61,43 @@
 </div>
 
 </template>
-
 <script>
 import usePosts from "../../composables/posts";
 import { onMounted } from "vue";
+import Swal from 'sweetalert2'
 
 export default {
-    setup() {
-        const { posts, getPosts, deletePost } = usePosts()
+  setup() {
+    const { posts, getPosts, deletePost } = usePosts()
 
-        onMounted(getPosts)
+    onMounted(getPosts)
 
-        const deleteMyPost = async (id) => {
-            if (!window.confirm('Are you sure?')) {
-                return
-            }
-
-            await deletePost(id);
-            await getPosts();
+    const deleteMyPost = async (id) => {
+      Swal.fire({
+        title: "Are you sure ?",
+        text: "You won't be able to revert this post !",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it !",
+      }).then(async (result) => { // Add 'async' keyword here
+        if (result.isConfirmed) {
+          await deletePost(id);
+          await getPosts();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your Post has been deleted.",
+            icon: "success",
+          });
         }
-
-        return {
-            posts,
-            deleteMyPost
-        }
+      });
     }
+
+    return {
+      posts,
+      deleteMyPost
+    }
+  }
 }
 </script>

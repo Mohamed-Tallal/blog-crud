@@ -76,8 +76,8 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-       $result = $this->postRepository->show($id);
-       return self::makeSuccess(Response::HTTP_OK,  __('messages.delete_successfully'), PostShowResource::make($result));
+       $result = $this->postRepository->softDelete($id);
+       return self::makeSuccess(Response::HTTP_OK,  __('messages.delete_successfully'));
     }
 
 }
