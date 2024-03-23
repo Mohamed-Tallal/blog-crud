@@ -5,6 +5,14 @@
       <router-link class="group flex items-center rounded-md text-blue-500 border border-blue-500 hover:border-blue-400 hover:bg-blue-50 text-sm font-medium px-3 py-2 shadow-sm" :to="{ name: 'user.post.index' }"> My Posts</router-link>
     </div>
 </header>
+<div v-if="errors">
+  <div v-for="(v, k) in errors" :key="k" class="bg-red-500 text-white rounded font-bold mb-4 shadow-lg py-2 px-4 pr-0">
+    <p v-for="error in v" :key="error" class="text-sm">
+      {{ error }}
+    </p>
+  </div>
+</div>
+
 <form v-on:submit.prevent="updatePostData">
 <div class="space-y-12">
   <div class="border-b border-gray-900/10 pb-12">
