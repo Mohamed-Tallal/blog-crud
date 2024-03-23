@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Comment;
+use App\Trait\GetsFileUrl;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, GetsFileUrl;
 
     protected $fillable = [
         'image',
@@ -35,7 +36,7 @@ class Post extends Model
         return self::getLocaleValue('body');
     }
     
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -43,9 +44,8 @@ class Post extends Model
     /**
      * Get all of the comments for the Post
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comments(): HasMany
+    public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id');
     }

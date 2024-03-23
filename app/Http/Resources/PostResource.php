@@ -22,6 +22,7 @@ class PostResource extends JsonResource
             'body'      => $this->body_en,
             'comments'  => $this->comments->count(),
             'user'      => UserResource::make($this->user),
+            'created_at'=> $this->created_at->diffForHumans(),
 
         ];
     }

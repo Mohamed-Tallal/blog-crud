@@ -23,6 +23,7 @@ class PostShowResource extends JsonResource
             'body'      => $this->body_en,
             'user'      => UserResource::make($this->user),
             'comments'  => CommentResource::collection($this->comments),
+            'created_at'=> $this->created_at->diffForHumans(),
         ];
     }
 }
