@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Comment;
 use App\Trait\GetsFileUrl;
+use App\Trait\HasLocaleValue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory, GetsFileUrl;
+    use HasFactory, GetsFileUrl,HasLocaleValue;
 
     protected $fillable = [
         'image',

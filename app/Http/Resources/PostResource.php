@@ -18,8 +18,8 @@ class PostResource extends JsonResource
         return [
             'id'        => $this->id,
             'image'     => $this->image_path,
-            'title'     => $this->title_en,
-            'body'      => $this->body_en,
+            'title'     => $this->title,
+            'body'      => $this->body,
             'comments'  => $this->comments->count(),
             'user'      => UserResource::make($this->user),
             'created_at'=> $this->created_at->diffForHumans(),
