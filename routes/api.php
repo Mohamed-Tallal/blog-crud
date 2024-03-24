@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\Dashboard\PostController;
+use App\Http\Controllers\Dashboard\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('blog', BlogController::class)->only(['index' , 'show']);
 Route::apiResource('posts', PostController::class);
+
+Route::prefix('comments')->group(function () {
+    Route::get('/', [CommentController::class , 'index']);
+    Route::delete('/bulk-delete', [CommentController::class , 'bulkDelete']);
+});

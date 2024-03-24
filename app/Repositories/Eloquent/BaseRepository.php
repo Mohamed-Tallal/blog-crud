@@ -96,4 +96,20 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->whereId($model_id)->forceDelete();
     }
+
+    public function softBulkDelete(array $model_ids): ?bool
+    {
+        foreach ($model_ids as $id) {
+            $this->softDelete($id);
+        }
+        return true;
+    }
+
+    public function hardBukDelete(array $model_ids): ?bool
+    {
+    foreach ($model_ids as $id) {
+        $model = $this->hardDelete($id);
+    }
+    return true;
+    }
 }

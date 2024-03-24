@@ -5,6 +5,7 @@ import PostsComponent from '@/components/dashboard/PostsComponent.vue'
 import PostComponent from '@/components/PostComponent.vue'
 import PostCreateComponent from '@/components/dashboard/PostCreateComponent.vue'
 import PostEditComponent from '@/components/dashboard/PostEditComponent.vue'
+import CommantsComponent from '@/components/dashboard/CommantsComponent.vue'
 
 const routes = [
     {
@@ -19,7 +20,7 @@ const routes = [
         props: true
     },
     {
-        path: '/dashboard/manage/post',
+        path: '/dashboard/manage/posts',
         name: 'user.post.index',
         component: PostsComponent
     },
@@ -32,6 +33,12 @@ const routes = [
         path: '/dashboard/manage/post/:id/edit',
         name: 'user.post.edit',
         component: PostEditComponent,
+        props: true
+    },
+    {
+        path: '/dashboard/manage/post/:id/comments',
+        name: 'user.post.comments',
+        component: CommantsComponent,
         props: true
     },
 ]

@@ -51,7 +51,7 @@ class PostController extends Controller
             'user_id'   => 1,
         ];
         if(isset($request->image)){
-            $data['image'] = uploadImage($request->file('image'));
+            $data['image'] = uploadImage($request->file('image') , 'posts');
         }
         $result = $this->postRepository->store($data);
         return self::makeSuccess(Response::HTTP_OK,  __('messages.success'), PostResource::make($result));
@@ -68,7 +68,7 @@ class PostController extends Controller
          ];
          
         if(isset($request->image)){
-            $data['image'] = uploadImage($request->file('image'));
+            $data['image'] = uploadImage($request->file('image') , 'posts');
         }
         $result = $this->postRepository->update($id , $data);
         return self::makeSuccess(Response::HTTP_OK,  __('messages.updated_successfully'));

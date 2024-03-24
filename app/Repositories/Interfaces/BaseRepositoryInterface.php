@@ -25,4 +25,8 @@ interface BaseRepositoryInterface
     public function softDelete(int $model_id): ?bool;
 
     public function hardDelete(int $model_id): ?bool;
+
+    public function softBulkDelete(array $model_ids): ?bool;
+    
+    public function hardBukDelete(array $model_ids): ?bool;
 }

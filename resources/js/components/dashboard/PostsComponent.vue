@@ -35,10 +35,12 @@
                 {{ item.title }}
             </td>
             <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
+              <router-link :to="{ name: 'user.post.comments', params: { id: item.id } }" style="color: blue; text-decoration: underline;">
                 {{ item.comments }}
+              </router-link>
             </td>
             <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                {{ item.created_at }}
+                  {{ item.created_at }}
             </td>
             <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
                 <router-link :to="{ name: 'user.post.edit', params: { id: item.id } }"
