@@ -51,9 +51,16 @@
             </td>
         </tr>
     </template>
+
     </tbody>
     
   </table>
+
+  <div class="my-5 text-center">
+    <TailwindPagination :data="paginator" @pagination-change-page="handlePaginationChange"/>
+  </div>
+
+
 </div>
 
 <div v-else>
@@ -61,43 +68,61 @@
 </div>
 
 </template>
-<script>
+
+<script setup>
+import { ref, watchEffect } from 'vue'
 import usePosts from "../../composables/posts";
 import { onMounted } from "vue";
+import { TailwindPagination } from 'laravel-vue-pagination';
 import Swal from 'sweetalert2'
 
-export default {
-  setup() {
-    const { posts, getPosts, deletePost } = usePosts()
+const { posts, getPosts, deletePost, paginator } = usePosts()
 
-    onMounted(getPosts)
+// Initialize current page
+const currentPage = ref(1);
 
-    const deleteMyPost = async (id) => {
+// Fetch posts on component mount
+onMounted(getPosts)
+
+// Watch for changes in current page
+watchEffect(() => {
+  getPosts(currentPage.value);
+})
+
+// Handler for pagination change
+function handlePaginationChange(pageNumber) {
+  currentPage.value = pageNumber;
+}
+
+// Function to calculate paginated posts
+function calculatePaginatedPosts() {
+  const startIndex = (currentPage.value - 1) * paginator.value.per_page;
+  const endIndex = startIndex + paginator.value.per_page;
+  return posts.value.slice(startIndex, endIndex);
+}
+
+// Computed property for paginated posts
+const paginatedPosts = calculatePaginatedPosts();
+
+// Delete post function
+const deleteMyPost = async (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this post!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await deletePost(id);
       Swal.fire({
-        title: "Are you sure ?",
-        text: "You won't be able to revert this post !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it !",
-      }).then(async (result) => { // Add 'async' keyword here
-        if (result.isConfirmed) {
-          await deletePost(id);
-          await getPosts();
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your Post has been deleted.",
-            icon: "success",
-          });
-        }
+        title: "Deleted!",
+        text: "Your Post has been deleted.",
+        icon: "success",
       });
     }
-
-    return {
-      posts,
-      deleteMyPost
-    }
-  }
+  });
 }
 </script>

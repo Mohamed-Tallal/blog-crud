@@ -24,7 +24,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $wheresIn =  $with = $wheres = $withCount = $orWheres =  [];
-        $is_paginate = $request->is_paginate ?? 0;
+        $is_paginate = $request->is_paginate ?? 1;
        // $wheres = ['user_id' => auth()->user()->id];
         if($request->search){
             $wheres[] = ['title_en', 'like', '%' . $request->search . '%'];
@@ -51,7 +51,7 @@ class PostController extends Controller
             'user_id'   => 1,
         ];
         if(isset($request->image)){
-            $data['image'] = '';
+            $data['image'] = uploadImage($request->file('image'));
         }
         $result = $this->postRepository->store($data);
         return self::makeSuccess(Response::HTTP_OK,  __('messages.success'), PostResource::make($result));
@@ -60,14 +60,15 @@ class PostController extends Controller
     public function update(PostRequest $request, $id)
     {
          $data = [
-            'title_en' => $request->title_en,
-            'body_en' => $request->body_en,
-            'title_ar' => $request->title_ar,
-            'body_ar' => $request->body_ar,
+            'title_en'  => $request->title_en,
+            'body_en'   => $request->body_en,
+            'title_ar'  => $request->title_ar,
+            'body_ar'   => $request->body_ar,
+            'user_id'   => 1,
          ];
          
         if(isset($request->image)){
-            $data['image'] = '';
+            $data['image'] = uploadImage($request->file('image'));
         }
         $result = $this->postRepository->update($id , $data);
         return self::makeSuccess(Response::HTTP_OK,  __('messages.updated_successfully'));

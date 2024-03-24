@@ -22,7 +22,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $wheresIn =  $with = $wheres = $withCount = $orWheres =  [];
-        $is_paginate = $request->is_paginate ?? 0;
+        $is_paginate = $request->is_paginate ?? 1;
  
         if($request->search){
             $wheres[] = ['title_en', 'like', '%' . $request->search . '%'];

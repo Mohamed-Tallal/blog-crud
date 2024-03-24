@@ -7,11 +7,26 @@ export default function usePosts() {
     const post = ref([])
     const router = useRouter()
     const errors = ref('')
+    const paginator = ref({
+        current_page: 1,
+        last_page: 1,
+        total: 0,
+        per_page: 10 // Adjust per_page value as needed
+    })
 
-    const getPosts = async () => {
-        let response = await axios.get('/api/posts')
-        posts.value = response.data.data;
-
+    const getPosts = async (page = 1) => {
+        try {
+            const response = await axios.get('/api/posts', {
+                params: {
+                    page: page
+                }
+            })
+            const responseData = response.data.data;
+            posts.value = responseData.list;
+            paginator.value = responseData.paginator;
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const getPost = async (id) => {
@@ -19,30 +34,34 @@ export default function usePosts() {
         post.value = response.data.data;
     }
 
-    const storePost = async (data) => {
+    const storePost = async (formData) => {
         errors.value = ''
         try {
-            console.log(data);
-            await axios.post('/api/posts', data)
-            await router.push({name: 'user.post.index'})
-        } catch (e) {
-            if (e.response.status === 422) {
-                errors.value = e.response.data.errors
+          await axios.post('/api/posts', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data', // Set Content-Type as multipart/form-data
             }
+          });
+          await router.push({name: 'user.post.index'});
+        } catch (e) {
+          if (e.response.status === 422) {
+            errors.value = e.response.data.errors
+          }
         }
-    }
+      }
 
-    const updatePost = async (id) => {
+      const updatePost = async (id, formData) => {
         errors.value = ''
         try {
-            await axios.put('/api/posts/' + id , post.value)
-            await router.push({name: 'user.post.index'})
+            await axios.post(`/api/posts/${id}`, formData);
+            await router.push({name: 'user.post.index'});
         } catch (e) {
             if (e.response.status === 422) {
                errors.value = e.response.data.errors
             }
         }
     }
+
 
     const deletePost = async (id) => {
         await axios.delete('/api/posts/' + id)
@@ -57,6 +76,7 @@ export default function usePosts() {
         getPost,
         storePost,
         updatePost,
-        deletePost
+        deletePost,
+        paginator
     }
 }

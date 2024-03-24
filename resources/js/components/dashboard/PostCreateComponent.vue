@@ -36,7 +36,12 @@
             <textarea id="about" name="about" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"  v-model="form.body_ar"></textarea>
           </div>
         </div>
-  
+        <!-- Input for uploading an image -->
+        <div class="col-span-full">
+          <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Image</label>
+          <input type="file" name="image" accept="image/*" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-on:change="handleImageChange">
+        </div>
+
         <div class="col-span-full">
           <label for="about" class="block text-sm font-medium leading-6 text-gray-900">English Description</label>
           <div class="mt-2">
@@ -67,20 +72,34 @@ export default {
             'body_ar': '',
             'title_en': '',
             'body_en': '',
+            'image' : null  ,
         })
 
-        const { errors, storePost } = usePosts()
+      const { errors, storePost } = usePosts()
 
-        const saveMyPost = async () => {
-            await storePost({...form});
-            Swal.fire("Post Created successfully");
+      const saveMyPost = async () => {
+        const formData = new FormData();
+        formData.append('image', form.image); // Append the image file to FormData
 
-        }
+        formData.append('title_ar', form.title_ar);
+        formData.append('body_ar', form.body_ar);
+        formData.append('title_en', form.title_en);
+        formData.append('body_en', form.body_en);
+
+        await storePost(formData);
+        Swal.fire("Post Created successfully");
+      }
+
+      const handleImageChange = (event) => {
+           form.image = event.target.files[0]; // Update form.image with the selected file
+      }
+
 
         return {
             form,
             errors,
-            saveMyPost
+            saveMyPost,
+            handleImageChange
         }
     }
 }

@@ -26,7 +26,7 @@
                 type="text"
                 aria-label="Filter posts"
                 placeholder="Filter posts..."
-                v-model="search"
+                v-model="searchQuery"
                 @input="handleSearchInput"
               >
             </form>
@@ -52,6 +52,11 @@
                 </div>
               </div>
           </div>
+          <div class="my-5 text-center">
+            <TailwindPagination :data="paginator" @pagination-change-page="handlePaginationChange"/>
+
+          </div>
+
         </div>
         <div v-else>
           <h2 class="text-center py-12 font-bold">No posts found.</h2>
@@ -61,15 +66,25 @@
 
 
 <script setup>
+import { ref } from 'vue'
 import useBlog from '@/composables/blog'
-import { onMounted, watchEffect } from 'vue'
+import { onMounted, watch } from 'vue'
+import { TailwindPagination } from 'laravel-vue-pagination';
 
-const { posts, listPosts } = useBlog()
-let search = '';
+const { posts, listPosts, paginator } = useBlog()
+
+const currentPage = ref(1);
+const searchQuery = ref('');
 
 onMounted(() => {
-  listPosts(search)
+  listPosts({ page: currentPage.value, search: searchQuery.value })
 })
+
+// Handler for pagination change
+function handlePaginationChange(pageNumber) {
+  currentPage.value = pageNumber;
+  listPosts({ page: currentPage.value, search: searchQuery.value });
+}
 
 function truncateString(str, num) {
   if (str.length <= num) {
@@ -79,9 +94,9 @@ function truncateString(str, num) {
 }
 
 // Handler for search input
-function handleSearchInput(event) {
-  search = event.target.value;
-  listPosts(search)
+watch(searchQuery, () => {
+  currentPage.value = 1; // Reset page to 1 when search changes
+  listPosts({ page: currentPage.value, search: searchQuery.value });
+})
 
-}
 </script>
