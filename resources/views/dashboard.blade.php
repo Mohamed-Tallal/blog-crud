@@ -11,3 +11,10 @@
         </div>
     </div>
 </x-app-layout>
+
+@auth
+    <script>
+        const user = {!! json_encode(auth()->user()) !!};
+        localStorage.setItem('authUser', JSON.stringify(user));
+    </script>
+@endauth
