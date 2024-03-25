@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Cache;
 
 class RegisteredUserController extends Controller
 {
@@ -50,6 +51,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        Cache::put('authUser', $user, 60*60*1000);
 
         return redirect(RouteServiceProvider::HOME);
     }

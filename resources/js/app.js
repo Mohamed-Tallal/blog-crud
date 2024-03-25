@@ -11,7 +11,7 @@ import router from '@/router/index.js'
 import PostsListComponent from '@/components/PostsListComponent.vue'
 
 createApp({
-    components: {
-        PostsListComponent
-    }
+  components: {
+    PostsListComponent
+  }
 }).use(router).mount('#app')

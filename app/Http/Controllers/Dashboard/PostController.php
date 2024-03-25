@@ -13,21 +13,23 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\PostShowResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
     
     use ApiResponse ,UploadFile;  
-
+    public $auth_user = null;
     public function __construct(readonly PostRepositoryInterface $postRepository)
     {
+        $this->auth_user = Cache::get('authUser');
     }
  
     public function index(Request $request)
     {
         $wheresIn =  $with = $wheres = $withCount = $orWheres =  [];
         $is_paginate = $request->is_paginate ?? 1;
-       // $wheres = ['user_id' => auth()->user()->id];
+       $wheres = ['user_id' =>  $this->auth_user->id];
         if($request->search){
             $wheres[] = ['title_en', 'like', '%' . $request->search . '%'];
             $orWheres[] = ['title_ar', 'like', '%' . $request->search . '%'];
@@ -50,7 +52,7 @@ class PostController extends Controller
             'body_en' => $request->body_en,
             'title_ar' => $request->title_ar,
             'body_ar' => $request->body_ar,
-            'user_id'   => 1,
+            'user_id'   => $this->auth_user->id,
         ];
         if(isset($request->image)){
             $data['image'] = $this->SaveImage('uploads/posts' ,$request->file('image') );
@@ -66,7 +68,6 @@ class PostController extends Controller
             'body_en'   => $request->body_en,
             'title_ar'  => $request->title_ar,
             'body_ar'   => $request->body_ar,
-            'user_id'   => 1,
          ];
          
         if(isset($request->image)){
