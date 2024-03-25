@@ -39,5 +39,7 @@
     "register.submit": "Register",
     "register.hasAccount": "Already registered?",
     "warning.post":"You won't be able to revert this post!",
-    "post.have.been.deleted": "Your Post has been deleted."
+    "post.have.been.deleted": "Your Post has been deleted.",
+    "edit":"Edit",
+    "delete":"Delete"
 }

@@ -39,5 +39,7 @@
     "register.submit": "تسجيل",
     "register.hasAccount": "هل لديك حساب بالفعل؟",
     "warning.post":"لن تتمكن من استعادة هذا المقال!",
-    "post.have.been.deleted": "تم حذف مقالك."
+    "post.have.been.deleted": "تم حذف مقالك.",
+    "edit":"تعديل",
+    "delete":"حذف"
 }
