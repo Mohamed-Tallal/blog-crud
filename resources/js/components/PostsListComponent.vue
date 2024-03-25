@@ -35,16 +35,12 @@
           <div class="pt-10 pb-1 px-1" v-for="item in posts" :key="item.id">
               <!--Card 1-->
               <div class=" w-full lg:max-w-full lg:flex">
-                <div v-if="item.image">
                   <!-- Render the image if it exists -->
-                  <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" :style="{ 'background-image': `url('${encodeURI(item.image)}')` }" title="Mountain">
+                  <div v-if="item.image != null" class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" :style="{ 'background-image': `url('${encodeURI(item.image)}')` }" title="Mountain">
                   </div>
-                </div>
-                <div v-else>
                   <!-- Render a default image if image is null -->
-                  <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('https://th.bing.com/th/id/R.61a9938407c44d0259447347c1c8de08?rik=c4aPFE24miQgvQ')" title="Mountain">
+                  <div v-else class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('https://via.placeholder.com/1000x800')" title="Mountain">
                   </div>
-                </div>
                 <div class="lg:w-2000 border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                   <div class="mb-8">
                     <router-link  class="text-gray-900 font-bold text-xl mb-2" :to="{ name: 'post.show', params: { id: item.id } }">{{item.title}}</router-link>

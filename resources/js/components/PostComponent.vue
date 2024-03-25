@@ -10,7 +10,8 @@
         </header>
           <div>
             <div class="mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-              <img class="h-48 w-full object-cover" src="https://via.placeholder.com/1000x800" alt="Example Post">
+              <img v-if="post.image == null" class="h-48 w-full object-cover" src="https://via.placeholder.com/1000x800" alt="Example Post">
+              <img v-else class="h-48 w-full object-cover" :src="post.image" alt="Example Post">
               <div class="p-8">
                 <div class="flex justify-between items-center mb-2">
                   <h1 class="text-2xl font-bold">{{ post.title }}</h1>

@@ -25,7 +25,12 @@ class Post extends Model
 
     public function getImagePathAttribute($value): ?string
     {
-        return $this->image;//self::makeFileUrl($this->image);
+        if($this->image){
+            return asset('uploads/posts/' . $this->image);
+
+        }
+        return null;
+
     }
 
     public function getTitleAttribute()

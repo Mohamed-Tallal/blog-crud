@@ -23,6 +23,6 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::view('/{any}', 'dashboard')
+Route::view('/dashboard/{any}', 'dashboard')
     ->middleware('auth')
     ->where('any', '.*');

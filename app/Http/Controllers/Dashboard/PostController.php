@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Trait\UploadFile;
 use App\Trait\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\PostShowResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repositories\Interfaces\PostRepositoryInterface;
@@ -15,7 +17,7 @@ use App\Repositories\Interfaces\PostRepositoryInterface;
 class PostController extends Controller
 {
     
-    use ApiResponse;  
+    use ApiResponse ,UploadFile;  
 
     public function __construct(readonly PostRepositoryInterface $postRepository)
     {
@@ -51,7 +53,7 @@ class PostController extends Controller
             'user_id'   => 1,
         ];
         if(isset($request->image)){
-            $data['image'] = uploadImage($request->file('image') , 'posts');
+            $data['image'] = $this->SaveImage('uploads/posts' ,$request->file('image') );
         }
         $result = $this->postRepository->store($data);
         return self::makeSuccess(Response::HTTP_OK,  __('messages.success'), PostResource::make($result));
@@ -68,7 +70,9 @@ class PostController extends Controller
          ];
          
         if(isset($request->image)){
-            $data['image'] = uploadImage($request->file('image') , 'posts');
+            $post = $this->postRepository->show($id);
+            $post->image == null ?? Storage::disk('public_image')->delete('/product/'.$post->img);
+            $data['image'] = $this->SaveImage('uploads/posts' ,$request->file('image') );
         }
         $result = $this->postRepository->update($id , $data);
         return self::makeSuccess(Response::HTTP_OK,  __('messages.updated_successfully'));
@@ -77,6 +81,8 @@ class PostController extends Controller
 
     public function destroy($id)
     {
+        $post = $this->postRepository->show($id);
+        $post->image == null ?? Storage::disk('public_image')->delete('/product/'.$post->img);
        $result = $this->postRepository->softDelete($id);
        return self::makeSuccess(Response::HTTP_OK,  __('messages.delete_successfully'));
     }
