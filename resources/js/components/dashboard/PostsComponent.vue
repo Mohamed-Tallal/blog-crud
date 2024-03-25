@@ -1,8 +1,8 @@
 <template>
   <header class="bg-white space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6">
     <div class="flex items-center justify-between">
-      <router-link class="font-semibold text-slate-900" :to="{ name: 'post.index' }">Blog Posts</router-link>
-      <router-link class="group flex items-center rounded-md text-blue-500 border border-blue-500 hover:border-blue-400 hover:bg-blue-50 text-sm font-medium px-3 py-2 shadow-sm" :to="{ name: 'user.post.create' }"> Create</router-link>
+      <router-link class="font-semibold text-slate-900" :to="{ name: 'post.index' }">{{ $t('blog.posts') }}</router-link>
+      <router-link class="group flex items-center rounded-md text-blue-500 border border-blue-500 hover:border-blue-400 hover:bg-blue-50 text-sm font-medium px-3 py-2 shadow-sm" :to="{ name: 'user.post.create' }">{{ $t('create') }} </router-link>
     </div>
 </header>
 <div  v-if="posts.length > 0">
@@ -11,19 +11,19 @@
     <tr>
         <th class="px-6 py-3 bg-gray-50">
             <span
-                class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">Title</span>
+                class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">{{ $t('title') }}</span>
         </th>
         <th class="px-6 py-3 bg-gray-50">
             <span
-                class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">Number of comments </span>
+                class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">{{ $t('number.of.comments') }} </span>
         </th>
         <th class="px-6 py-3 bg-gray-50">
             <span
-                class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">Creation Date</span>
+                class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">{{ $t('creation.date') }}</span>
         </th>
         <th class="px-6 py-3 bg-gray-50">
           <span
-              class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">Actions</span>
+              class="float-left text-xs font-medium tracking-wider leading-4 text-left text-gray-500">{{ $t('actions') }}</span>
       </th>
     </tr>
     </thead>
@@ -66,7 +66,7 @@
 </div>
 
 <div v-else>
-  <h2 class="text-center py-12 font-bold">No posts found.</h2>
+  <h2 class="text-center py-12 font-bold">{{ $t('no_posts.found') }}</h2>
 </div>
 
 </template>
@@ -77,6 +77,7 @@ import usePosts from "../../composables/posts";
 import { onMounted } from "vue";
 import { TailwindPagination } from 'laravel-vue-pagination';
 import Swal from 'sweetalert2'
+import { trans } from 'laravel-vue-i18n';
 
 const { posts, getPosts, deletePost, paginator } = usePosts()
 
@@ -109,20 +110,21 @@ const paginatedPosts = calculatePaginatedPosts();
 // Delete post function
 const deleteMyPost = async (id) => {
   Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this post!",
+    title: trans('are.you.sure') ,
+    text:  trans('warning.post') ,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then(async (result) => {
+    cancelButtonText: trans('cancel'),
+    confirmButtonText: trans('yes.delete') ,
+    }).then(async (result) => {
     if (result.isConfirmed) {
       await deletePost(id);
       Swal.fire({
-        title: "Deleted!",
-        text: "Your Post has been deleted.",
-        icon: "success",
+      title: trans('deleted'),
+      text: trans('post.have.been.deleted'),
+      icon: trans('success'),
       });
     }
   });
