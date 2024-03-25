@@ -41,6 +41,19 @@
 
                     </x-slot>
                 </x-dropdown>
+
+                <!-- Language Dropdown -->
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <form action="{{ route('appLocaleRoute') }}" method="POST">
+                    @csrf
+                    <select name="locale" onchange="this.form.submit()" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md shadow-sm">
+                        <option value="en" {{ App::getLocale() == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="ar" {{ App::getLocale() == 'ar' ? 'selected' : '' }}>Arabic</option>
+                        <!-- Add more languages as needed -->
+                    </select>
+                </form>
+            </div>
+            
             </div>
 
             <!-- Hamburger -->
