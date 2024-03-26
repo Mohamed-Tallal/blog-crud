@@ -7,6 +7,8 @@ import PostCreateComponent from '@/components/dashboard/PostCreateComponent.vue'
 import PostEditComponent from '@/components/dashboard/PostEditComponent.vue'
 import CommantsComponent from '@/components/dashboard/CommantsComponent.vue'
 
+import CommentEditComponent from '@/components/CommentEditComponent.vue'
+
 const routes = [
     {
         path: '/dashboard',
@@ -17,6 +19,12 @@ const routes = [
         path: '/dashboard/:id',
         name: 'post.show',
         component: PostComponent,
+        props: true
+    },
+    {
+        path: '/dashboard/:id/comment/:comment',
+        name: 'post.edit.comment',
+        component: CommentEditComponent,
         props: true
     },
     {

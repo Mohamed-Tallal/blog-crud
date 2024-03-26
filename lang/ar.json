@@ -41,5 +41,10 @@
     "warning.post":"لن تتمكن من استعادة هذا المقال!",
     "post.have.been.deleted": "تم حذف مقالك.",
     "edit":"تعديل",
-    "delete":"حذف"
+    "delete":"حذف",
+    "comment.created":"تم إضافة تعليق بنجاح",
+    "comment.updated":"تم تعديل تعليق بنجاح",
+    "update.comment" : "تعديل التعليق"
+
+
 }

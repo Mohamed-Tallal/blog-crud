@@ -6,6 +6,8 @@ export default function useComments() {
     const comments = ref([])
     const router = useRouter()
     const errors = ref('')
+    const comment = ref([])
+
     const paginator = ref({
         current_page: 1,
         last_page: 1,
@@ -28,24 +30,72 @@ export default function useComments() {
         }
     }
 
+    const getComment = async (id) => {
+      let response = await axios.get('/api/comments/' + id )
+      
+      comment.value = response.data.data;
+    }
+    
+
+    const deleteComment = async (id) => {
+      try{
+        console.log("response");
+
+        const response = await axios.delete('/api/comments/' + id)
+        console.log(response);
+      }catch(e){
+        console.log(e);
+      }
+    }
+
+    const storeComment = async (data,id) => {
+      errors.value = ''
+      try {
+          console.log(data);
+          await axios.post('/api/comments', data)
+          await router.push({name: 'post.show', params: { id: id }})
+      } catch (e) {
+          if (e.response.status === 422) {
+              errors.value = e.response.data.errors
+          }
+      }
+  }
+
+  const updateComment = async (id , post_id) => {
+      errors.value = ''
+      try {
+          await axios.put('/api/comments/' + id , comment.value)
+          await router.push({name: 'post.show', params: { id: post_id }})
+      } catch (e) {
+          if (e.response.status === 422) {
+             errors.value = e.response.data.errors
+          }
+      }
+  }
+
+
     const deleteComments = async (ids) => {
         try {
           const response = await axios.delete('/api/comments/bulk-delete', {
             data: ids ,
           });
-          // Handle response if needed
           console.log(response.data);
         } catch (error) {
-          // Handle error
           console.error(error);
         }
       };
 
+      
     return {
         comments,
         errors,
         getComments,
         deleteComments,
-        paginator
+        paginator,
+        getComment,
+        comment,
+        deleteComment,
+        storeComment,
+        updateComment
     }
 }
