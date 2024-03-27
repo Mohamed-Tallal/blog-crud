@@ -8,6 +8,8 @@ use App\Repositories\Eloquent\PostRepository;
 use App\Repositories\Eloquent\UserRepository;
 
 
+use App\Facade\Drivers\Socials\FacebookDriver;
+use App\Facade\Contracts\SocialDriverInterface;
 use App\Repositories\Eloquent\CommentRepository;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
@@ -32,8 +34,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BaseRepositoryInterface::class, BaseRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
-        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);        
         
-
     }
 }

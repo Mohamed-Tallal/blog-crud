@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\SocialProvider;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,7 +24,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'national_id'
+        'national_id',
+        'is_provider'
     ];
 
     /**
@@ -62,5 +64,14 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    /**
+     * Get all of the social providers for the User
+     *
+     */
+    public function socialProviders()
+    {
+        return $this->hasMany(SocialProvider::class , 'user_id');
     }
 }
