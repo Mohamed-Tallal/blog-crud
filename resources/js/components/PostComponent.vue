@@ -1,5 +1,8 @@
 <template>
   <div>
+    <loader v-if="isLoading" />
+    <!-- Render your posts when not loading -->
+    <div v-else>
       <header class="bg-white space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6">
           <div class="flex items-center justify-between">
             <h2 class="font-semibold text-slate-900">
@@ -35,7 +38,7 @@
                           <p class="text-gray-900 font-semibold  mx-2" >{{item.user.name}}</p>
                           <div class="ml-auto" v-if="item.my_comment">
                             <!-- Edit Button -->
-                            <router-link lass="text-gray-500 hover:text-gray-700 mx-3" :to="{ name: 'post.edit.comment', params: { id: post.id , comment:item.id } }">
+                            <router-link lass="text-blue-500 hover:text-blue-700 mx-3" :to="{ name: 'post.edit.comment', params: { id: post.id , comment:item.id } }">
                               {{ $t('edit') }}
                             </router-link>
                             <!-- Modal toggle -->
@@ -56,6 +59,14 @@
                 </ul>
               </div>
             </div>
+            <div class="px-8" v-if="errors">
+              <div v-for="(v, k) in errors" :key="k" class="bg-red-500 text-white rounded font-bold mb-4 shadow-lg py-2 px-4 pr-0">
+                <p v-for="error in v" :key="error" class="text-sm">
+                  {{ error }}
+                </p>
+              </div>
+            </div>
+
             <div class="p-8">
               <form @submit.prevent="submitComment">
                 <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-white-700 dark:border-gray-600">
@@ -75,8 +86,7 @@
 
           </div>
         </div>
-      
-        
+    </div>    
   </div>
 </template>
 
@@ -87,6 +97,7 @@ import useComments from '@/composables/comments'
 import Swal from 'sweetalert2'
 import { trans } from 'laravel-vue-i18n';
 import {useRoute} from 'vue-router'
+import loader  from '@/Components/LoaderComponent.vue';
 
 export default {
 
@@ -94,8 +105,8 @@ export default {
     const route = useRoute();
     const newComment = ref({ description: '' })
 
-    const {post, showPost } = useBlog()
-    const {comment, deleteComment, storeComment} = useComments()
+    const {post, showPost ,isLoading} = useBlog()
+    const {comment, deleteComment, storeComment ,errors} = useComments()
       onMounted(()=>{
         showPost(route.params.id)
       })
@@ -108,9 +119,12 @@ export default {
         try {
           newComment.value.post_id = route.params.id
           await storeComment(newComment.value ,route.params.id)
-          Swal.fire(trans("comment.created"));
-          newComment.value.description = ''
-          showPost(route.params.id)
+          if(errors.value.length  == []){
+            Swal.fire(trans("comment.created"));
+            newComment.value.description = ''
+            showPost(route.params.id)
+          }
+
         } catch (error) {
           console.error('Error submitting comment:', error)
         }
@@ -144,7 +158,10 @@ export default {
         post,
         deleteMyComment,
         newComment,
-        submitComment
+        submitComment,
+        loader,
+        isLoading,
+        errors
       }
 
   }

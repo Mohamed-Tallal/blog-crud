@@ -1,9 +1,18 @@
+<!-- resources/js/components/Loader.vue -->
 <template>
-  <div id="preloader">
-       <div class="jumper">
-           <div></div>
-           <div></div>
-           <div></div>
-       </div>
-   </div>
-</template>
+    <div class="loader">
+      Loading... <!-- You can customize this message -->
+    </div>
+  </template>
+  
+  <style scoped>
+  .loader {
+    /* Add your loader styling here */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    font-size: 16px;
+    color: #333;
+  }
+  </style>

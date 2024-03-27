@@ -13,6 +13,7 @@ export default function usePosts() {
         total: 0,
         per_page: 10 // Adjust per_page value as needed
     })
+    const isLoading = ref(true);
 
     const getPosts = async (page = 1) => {
         try {
@@ -24,6 +25,7 @@ export default function usePosts() {
             const responseData = response.data.data;
             posts.value = responseData.list;
             paginator.value = responseData.paginator;
+            isLoading.value = false
         } catch (error) {
             console.error(error)
         }
@@ -32,6 +34,8 @@ export default function usePosts() {
     const getPost = async (id) => {
         let response = await axios.get('/api/posts/' + id )
         post.value = response.data.data;
+        isLoading.value = false
+
     }
 
     const storePost = async (formData) => {
@@ -65,6 +69,7 @@ export default function usePosts() {
 
     const deletePost = async (id) => {
         await axios.delete('/api/posts/' + id)
+        isLoading.value = false
     }
 
 
@@ -77,6 +82,7 @@ export default function usePosts() {
         storePost,
         updatePost,
         deletePost,
-        paginator
+        paginator,
+        isLoading
     }
 }

@@ -11,6 +11,7 @@ export default function useBlog() {
       total: 0,
       per_page: 15
     })
+    const isLoading = ref(true);
 
     const listPosts = async ({ page, search }) => {
       try {
@@ -23,6 +24,8 @@ export default function useBlog() {
         const responseData = response.data.data;
         posts.value = responseData.list;
         paginator.value = responseData.paginator;
+        isLoading.value = false
+
       } catch (error) {
         console.error(error)
       }
@@ -31,7 +34,7 @@ export default function useBlog() {
     const showPost = async (id) => {
         let response = await axios.get(`/api/blog/${id}`)
         post.value = response.data.data
-
+        isLoading.value = false
     }
 
  
@@ -40,7 +43,8 @@ export default function useBlog() {
         posts,
         listPosts,
         showPost,
-        paginator
+        paginator,
+        isLoading
 
     }
 }

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <loader v-if="isLoading" />
+    <!-- Render your posts when not loading -->
+    <div v-else>
     <header class="bg-white space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6">
       <div class="flex items-center justify-between">
         <router-link class="font-semibold text-slate-900" :to="{ name: 'post.index' }">{{ $t('blog.posts') }}</router-link>
@@ -53,6 +56,8 @@
       <h2 class="text-center py-12 font-bold">{{ $t('no_comment.found') }}</h2>
     </div>
   </div>
+  
+  </div>
 </template>
 
 <script setup>
@@ -62,8 +67,9 @@ import { TailwindPagination } from 'laravel-vue-pagination'
 import useComments from "../../composables/comments"
 import Swal from 'sweetalert2'
 import { trans } from 'laravel-vue-i18n';
+import loader  from '@/Components/LoaderComponent.vue';
 
-const { comments, getComments, deleteComments, paginator } = useComments()
+const { comments, getComments, deleteComments, paginator ,isLoading } = useComments()
 const router = useRouter()
 
 // Selected comment IDs

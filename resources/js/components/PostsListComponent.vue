@@ -1,5 +1,10 @@
 <template>
     <div>
+    <!-- Display the loader when isLoading is true -->
+    <loader v-if="isLoading" />
+    <!-- Render your posts when not loading -->
+    <div v-else>
+     
         <header class="bg-white space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6">
             <div class="flex items-center justify-between">
               <h2 class="font-semibold text-slate-900">
@@ -69,6 +74,7 @@
             {{ $t('no_posts.found') }}</h2>
         </div>
     </div>
+    </div>
 </template>
 
 
@@ -77,8 +83,9 @@ import { ref } from 'vue'
 import useBlog from '@/composables/blog'
 import { onMounted, watch } from 'vue'
 import { TailwindPagination } from 'laravel-vue-pagination';
+import loader  from '@/Components/LoaderComponent.vue';
 
-const { posts, listPosts, paginator } = useBlog()
+const { posts, listPosts, paginator, isLoading } = useBlog()
 
 const currentPage = ref(1);
 const searchQuery = ref('');
@@ -91,6 +98,7 @@ onMounted(() => {
 function handlePaginationChange(pageNumber) {
   currentPage.value = pageNumber;
   listPosts({ page: currentPage.value, search: searchQuery.value });
+  isLoading.value = false;
 }
 
 function truncateString(str, num) {
@@ -104,6 +112,7 @@ function truncateString(str, num) {
 watch(searchQuery, () => {
   currentPage.value = 1; // Reset page to 1 when search changes
   listPosts({ page: currentPage.value, search: searchQuery.value });
+  isLoading.value = false;
 })
 
 </script>

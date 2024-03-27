@@ -14,6 +14,7 @@ export default function useComments() {
         total: 0,
         per_page: 10 // Adjust per_page value as needed
     })
+    const isLoading = ref(true);
 
     const getComments = async ({ page, post_id }) => {
         try {
@@ -26,23 +27,24 @@ export default function useComments() {
             const responseData = response.data.data;
             comments.value = responseData.list;
             paginator.value = responseData.paginator;
+            isLoading.value = false
+
         } catch (error) {
+          console.log(error);
         }
     }
 
     const getComment = async (id) => {
       let response = await axios.get('/api/comments/' + id )
-      
       comment.value = response.data.data;
+      isLoading.value = false
+
     }
     
 
     const deleteComment = async (id) => {
       try{
-        console.log("response");
-
-        const response = await axios.delete('/api/comments/' + id)
-        console.log(response);
+        await axios.delete('/api/comments/' + id)
       }catch(e){
         console.log(e);
       }
@@ -51,7 +53,6 @@ export default function useComments() {
     const storeComment = async (data,id) => {
       errors.value = ''
       try {
-          console.log(data);
           await axios.post('/api/comments', data)
           await router.push({name: 'post.show', params: { id: id }})
       } catch (e) {
@@ -96,6 +97,7 @@ export default function useComments() {
         comment,
         deleteComment,
         storeComment,
-        updateComment
+        updateComment,
+        isLoading
     }
 }

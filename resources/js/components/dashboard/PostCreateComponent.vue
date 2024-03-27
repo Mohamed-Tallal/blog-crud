@@ -55,7 +55,6 @@
       </div>
     </div>
     <button type="submit" class="items-center rounded-md text-blue-500 border border-blue-500 hover:border-blue-400 hover:bg-blue-50 text-sm font-medium px-3 py-2 shadow-sm">
-      Save
       {{ $t('save') }}
 
     </button> 
@@ -93,7 +92,10 @@ export default {
         formData.append('body_en', form.body_en);
 
         await storePost(formData);
-        Swal.fire(trans("post.created"));
+        if(errors.value.length  == []){
+          Swal.fire(trans("post.created"));
+
+        }
       }
 
       const handleImageChange = (event) => {
