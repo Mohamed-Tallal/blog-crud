@@ -41,7 +41,7 @@ class SocialiteController extends Controller
             Auth::login($user);
             Cache::forget('authUser');
             Cache::put('authUser', $user, 60*60*1000);
-            
+
             return redirect()->intended(RouteServiceProvider::HOME);
         } else {
             return redirect('/');
@@ -82,12 +82,4 @@ class SocialiteController extends Controller
         return $user;
     }
 
-    public function handleProviderCallback($provider)
-    {
-        try {
-            return Socialite::driver($provider)->user();
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
 }
