@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Cache;
 
 class RegisteredUserController extends Controller
 {
@@ -37,17 +38,21 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'national_id' => ['required', 'digits:10', 'starts_with:1,2,3', 'unique:users,national_id']
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'national_id' => $request->national_id
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
+
+        Cache::put('authUser', $user, 60*60*1000);
 
         return redirect(RouteServiceProvider::HOME);
     }

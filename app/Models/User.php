@@ -3,10 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\SocialProvider;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,6 +24,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'national_id',
+        'is_provider'
     ];
 
     /**
@@ -41,4 +46,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get all of the posts for the User
+     *
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id');
+    }
+
+
+    /**
+     * Get all of the comments for the User
+     *
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    /**
+     * Get all of the social providers for the User
+     *
+     */
+    public function socialProviders()
+    {
+        return $this->hasMany(SocialProvider::class , 'user_id');
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\SocialiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('auth/{provider}',[SocialiteController::class,'redirectToProvider'])->name('social-provider');
+Route::get('auth/{provider}/callback', [SocialiteController::class,'handleCallback']);
+
+Route::post('/locale', [LocaleController::class,'setLocale'])->name('appLocaleRoute');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
 
 require __DIR__.'/auth.php';
 

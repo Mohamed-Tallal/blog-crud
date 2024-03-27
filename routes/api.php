@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\Dashboard\PostController;
+use App\Http\Controllers\Dashboard\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('companies', CompanyController::class);
+Route::apiResource('blog', BlogController::class)->only(['index' , 'show']);
+Route::apiResource('posts', PostController::class);
+
+
+Route::apiResource('/comments', CommentController::class);
+Route::delete('comments/bulk-delete', [CommentController::class , 'bulkDelete']);
