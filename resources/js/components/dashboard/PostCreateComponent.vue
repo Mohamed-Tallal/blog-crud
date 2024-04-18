@@ -84,8 +84,10 @@ export default {
 
       const saveMyPost = async () => {
         const formData = new FormData();
-        formData.append('image', form.image); // Append the image file to FormData
-
+        //formData.append('image', form.image); // Append the image file to FormData
+        if (form.image !== null) {
+          formData.append('image', form.image);
+        }
         formData.append('title_ar', form.title_ar);
         formData.append('body_ar', form.body_ar);
         formData.append('title_en', form.title_en);

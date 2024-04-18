@@ -24,6 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('blog', BlogController::class)->only(['index' , 'show']);
 Route::apiResource('posts', PostController::class);
 
-
-Route::apiResource('/comments', CommentController::class);
 Route::delete('comments/bulk-delete', [CommentController::class , 'bulkDelete']);
+Route::apiResource('/comments', CommentController::class);
